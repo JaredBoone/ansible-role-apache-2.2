@@ -1,42 +1,32 @@
 ---
-# We need sudo for some of the Docker commands.
-sudo: required
+language: python
+services: docker
 
 env:
-  # Provide a list of OSes we want to use for testing.
-  - distro: centos6
-    init: /sbin/init
-    run_opts: ""
+  global:
+    - ROLE_NAME: apache-2.2
+  matrix:
+    # - MOLECULE_DISTRO: centos7
+    - MOLECULE_DISTRO: centos6
+    # - MOLECULE_DISTRO: ubuntu1804
+    # - MOLECULE_DISTRO: ubuntu1604
+    # - MOLECULE_DISTRO: ubuntu1404
+    # - MOLECULE_DISTRO: debian9
+    # - MOLECULE_DISTRO: debian8
 
-# Tell Travis to start Docker when it brings up an environment.
-services:
-  - docker
+install:
+  # Install test dependencies.
+  - pip install molecule docker
 
-before_install:
-  # Pull the image from Docker Hub for the OS under test.
-  - 'docker pull geerlingguy/docker-${distro}-ansible:latest'
+before_script:
+  # Use actual Ansible Galaxy role name for the project directory.
+  - cd ../
+  - mv ansible-role-$ROLE_NAME jaredboone.$ROLE_NAME
+  - cd jaredboone.$ROLE_NAME
 
 script:
-  # Start the container from the image and perform tests.
-
-  # Create a random file to store the container ID.
-  - container_id=$(mktemp)
-
-  # Run container detached, with our role mounted inside.
-  - 'docker run --detach --volume="${PWD}":/etc/ansible/roles/role_under_test:ro ${run_opts} geerlingguy/docker-${distro}-ansible:latest "${init}" > "${container_id}"'
-
-  # Check the role/playbook's syntax.
-  - >
-    docker exec --tty "$(cat ${container_id})" env TERM=xterm
-    ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml
-    --syntax-check
-  
-  # Run the role/playbook with ansible-playbook.
-  - >
-    docker exec --tty "$(cat ${container_id})" env TERM=xterm
-    ansible-playbook /etc/ansible/roles/role_under_test/tests/test.yml
-
+  # Run tests.
+  - molecule test
 
 notifications:
-  # Notify Ansible Galaxy when a role builds successfully.
-
+#  webhooks: https://galaxy.ansible.com/api/v1/notifications/
