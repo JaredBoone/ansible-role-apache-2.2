@@ -10,22 +10,22 @@ apache_ssl_chain: "/etc/pki/tls/certs/ca-bundle.crt"
 apache_ssl_use_chain: false
 
 apache_vhosts_ssl_with_chain:
-      - servername: "{{apache_host_fqdn}}"
-        documentroot: '{{ apache_document_root }}'
-        certificate_file: "{{ apache_ssl_crt }}"
-        certificate_key_file: "{{ apache_ssl_key }}"
-        certificate_chain_file: "{{ apache_ssl_chain }}"
-        extra_parameters: |
-                  <IfModule mod_headers.c>
-                    Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
-                  </IfModule>
+  - servername: "{{apache_host_fqdn}}"
+    documentroot: "{{ apache_document_root }}"
+    certificate_file: "{{ apache_ssl_crt }}"
+    certificate_key_file: "{{ apache_ssl_key }}"
+    certificate_chain_file: "{{ apache_ssl_chain }}"
+    extra_parameters: |
+      <IfModule mod_headers.c>
+        Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
+      </IfModule>
 
 apache_vhosts_ssl_without_chain:
-      - servername: "{{apache_host_fqdn}}"
-        documentroot: '{{ apache_document_root }}'
-        certificate_file: "{{ apache_ssl_crt }}"
-        certificate_key_file: "{{ apache_ssl_key }}"
-        extra_parameters: |
-                  <IfModule mod_headers.c>
-                    Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
-                  </IfModule>
+  - servername: "{{apache_host_fqdn}}"
+    documentroot: "{{ apache_document_root }}"
+    certificate_file: "{{ apache_ssl_crt }}"
+    certificate_key_file: "{{ apache_ssl_key }}"
+    extra_parameters: |
+      <IfModule mod_headers.c>
+        Header always set Strict-Transport-Security "max-age=15552000; includeSubDomains; preload"
+      </IfModule>

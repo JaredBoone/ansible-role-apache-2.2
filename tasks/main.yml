@@ -1,5 +1,6 @@
 ---
-- include_role: 
+- name: geerlingguy.apache
+  include_role:
     name: geerlingguy.apache
   vars:
     apache_allow_override: "All"
@@ -9,12 +10,12 @@
     apache_listen_port: 80
     apache_vhosts:
       - servername: "localhost"
-        documentroot: '{{ apache_document_root }}'
+        documentroot: "{{ apache_document_root }}"
         extra_parameters: |
-                  Redirect permanent / https://{{apache_host_fqdn}}:{{apache_host_ssl_port}}/
+          Redirect permanent / https://{{apache_host_fqdn}}:{{apache_host_ssl_port}}/
     apache_listen_port_ssl: 443
     apache_vhosts_filename: "ssl.conf"
-    apache_global_vhost_settings: | 
+    apache_global_vhost_settings: |
       LoadModule ssl_module modules/mod_ssl.so 
       Listen 443 
       SSLPassPhraseDialog builtin 

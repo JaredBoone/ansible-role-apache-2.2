@@ -2,4 +2,4 @@
 - hosts: localhost
   remote_user: root
   roles:
-    - ansible-role-apache-2.2
+      - ansible-role-apache-2.2
