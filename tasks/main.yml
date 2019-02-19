@@ -26,4 +26,6 @@
       SSLRandomSeed connect builtin
       SSLCryptoDevice builtin
       SSLProxyEngine on
-    apache_vhosts_ssl: "{{ lookup('vars','apache_vhosts_ssl_with_chain') if (apache_ssl_use_chain) else lookup('vars','apache_vhosts_ssl_without_chain')}}"
+    apache_vhosts_ssl: "{{ lookup('vars','apache_vhosts_ssl_with_chain') 
+      if (apache_ssl_use_chain) 
+      else lookup('vars','apache_vhosts_ssl_without_chain') }}"
