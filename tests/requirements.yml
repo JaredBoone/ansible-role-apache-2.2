@@ -1,0 +1,4 @@
+---
+# Ansible Galaxy roles.
+- src: geerlingguy.apache
+  version: 3.0.3
