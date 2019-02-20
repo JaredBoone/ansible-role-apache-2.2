@@ -25,4 +25,4 @@
       uri:
         url: "https://127.0.0.1/"
         validate_certs: false
-        status_code: 403 # expect a 403 Forbidden from /
+        status_code: 403  # expect a 403 Forbidden from /
