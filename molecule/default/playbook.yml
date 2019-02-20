@@ -4,18 +4,25 @@
   become: true
 
   vars:
-  # apache_listen_port_ssl: 443
-  # apache_create_vhosts: true
-  # apache_vhosts_filename: "vhosts.conf"
-  # apache_vhosts:
-  #   - servername: "example.com"
-  #     documentroot: "/var/www/vhosts/example_com"
+    apache_listen_port_ssl: 443
+    apache_create_vhosts: true
+    apache_vhosts_filename: "vhosts.conf"
+    apache_vhosts:
+      - servername: "example.com"
+        documentroot: "/var/www/vhosts/example_com"
 
   pre_tasks:
-  # - name: Update apt cache.
-  #   apt: update_cache=yes cache_valid_time=600
-  #   when: ansible_os_family == 'Debian'
-  #   changed_when: false
+    - name: Update apt cache.
+      apt: update_cache=yes cache_valid_time=600
+      when: ansible_os_family == 'Debian'
+      changed_when: false
 
   roles:
-    - role: jaredboone.apache-2.2
+    - role: ansible-role-apache-2.2
+
+  post_tasks:
+    - name: Ensure Apache is listening.
+      uri:
+        url: "https://127.0.0.1/"
+        validate_certs: false
+        status_code: 403 # expect a 403 Forbidden from /
